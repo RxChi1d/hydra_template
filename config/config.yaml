@@ -1,0 +1,24 @@
+defaults:
+  - _self_  # this is the default config
+  - cfg: 387/default  # override with 387/default.yaml
+  - override hydra/job_logging: colorlog
+  - override hydra/hydra_logging: colorlog
+
+hydra:
+  run:
+    dir: ${exp_setting.exp_dir}  # define the path to the experiment directory
+  job_logging:
+    handlers:
+      file:
+        filename: ${hydra:runtime.output_dir}/${hydra:job.name}.log  # define the path to the log file
+
+exp_setting:
+  seed: 2023
+  mlp_type: "tcnn"
+  precision: "float32"
+  exp_dir: "experiments/${dataset.name}/${dataset.scene}"
+  log_file: ${hydra:runtime.output_dir}/${hydra:job.name}.log
+
+dataset:
+  name: "zju_mocap"
+  scene: "387"
